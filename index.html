@@ -229,6 +229,16 @@
                     <input type="hidden" id="lead_source" name="lead_source" value="Web">
                     <input type="hidden" name="recordType" id="recordType" value="012Hu000000vXVJ">
 
+                    <!-- Hardcoded Address Fields -->
+                    <input type="hidden" name="street" value="9th Floor, Exquadra Tower, 1 Jade Dr" />
+                    <input type="hidden" name="city" value="Pasig" />
+                    <input type="hidden" name="state" value="Metro Manila" />
+                    <input type="hidden" name="zip" value="1605" />
+                    <input type="hidden" name="country" value="Philippines" />
+                    
+                    <!-- KPG Regions Field -->
+                    <input type="hidden" id="00NHu000017zkwx" name="00NHu000017zkwx" value="Manila Region">
+
                     <!-- Form Fields -->
                     <label for="first_name" class="required">First Name</label>
                     <input id="first_name" maxlength="40" name="first_name" type="text" required aria-required="true">
@@ -242,9 +252,11 @@
                     <input id="email" maxlength="80" name="email" type="email" required aria-required="true">
                     <div id="email_error" class="error-message">Please enter a valid email address.</div>
 
-                    <label for="company" class="required">Company</label>
-                    <input id="company" maxlength="40" name="company" type="text" required aria-required="true">
-                    <div id="company_error" class="error-message">Please enter your company name.</div>
+                    <label for="company">Company</label>
+                    <input id="company" maxlength="40" name="company" type="text">
+
+                    <label for="phone">Phone</label>
+                    <input id="phone" maxlength="40" name="phone" type="text">
 
                     <!-- Message Field -->
                     <label for="00NHu0000165pix">Message</label>
@@ -267,7 +279,6 @@
         </div>
     </div>
 
-   
     <script>
         const form = document.getElementById('enquiryForm');
         const submitButton = document.getElementById('submit_button');
