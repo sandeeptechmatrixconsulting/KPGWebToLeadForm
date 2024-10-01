@@ -210,36 +210,32 @@
     <div class="container">
         <div class="logo-container">
             <a href="http://www.kane-package.net/index.html" target="_blank">
-                <img src="http://www.kane-package.net/assets/img/KP%20LOGO.png" alt="Kanepackage Logo" class="logo">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                     data-src="http://www.kane-package.net/assets/img/KP%20LOGO.png" 
+                     alt="Kanepackage Logo" 
+                     class="logo lazy-load">
             </a>
         </div>
         <div class="content-container">
             <div class="image-container">
-                <img src="https://camo.githubusercontent.com/ed733ff92903c649d8eae2bd1d0f7fe3e954804826b09b361d8ec50e9a0bc96f/68747470733a2f2f64726976652e676f6f676c652e636f6d2f75633f6578706f72743d766965772669643d314473526a6f6a36535369485a71586650534c424e6f41614c39496f307036684b" alt="Public Image">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                     data-src="https://camo.githubusercontent.com/ed733ff92903c649d8eae2bd1d0f7fe3e954804826b09b361d8ec50e9a0bc96f/68747470733a2f2f64726976652e676f6f676c652e636f6d2f75633f6578706f72743d766965772669643d314473526a6f6a36535369485a71586650534c424e6f41614c39496f307036684b" 
+                     alt="Public Image" 
+                     class="lazy-load">
             </div>
             <div class="form-container">
-                <!-- Web-to-Lead Form -->
                 <form id="enquiryForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-                    <!-- Salesforce Org ID -->
                     <input type="hidden" name="oid" value="00DHu000008VGtQ">
-                    <!-- Redirect URL -->
                     <input type="hidden" name="retURL" value="https://sandeeptechmatrixconsulting.github.io/KPGWebToLeadForm/">
-
-                    <!-- Hidden Lead Source and Record Type -->
                     <input type="hidden" id="lead_source" name="lead_source" value="Web">
                     <input type="hidden" name="recordType" id="recordType" value="012Hu000000vXVJ">
-
-                    <!-- Hardcoded Address Fields -->
                     <input type="hidden" name="street" value="9th Floor, Exquadra Tower, 1 Jade Dr" />
                     <input type="hidden" name="city" value="Pasig" />
                     <input type="hidden" name="state" value="Metro Manila" />
                     <input type="hidden" name="zip" value="1605" />
                     <input type="hidden" name="country" value="Philippines" />
-                    
-                    <!-- KPG Regions Field -->
                     <input type="hidden" id="00NHu000017zkwx" name="00NHu000017zkwx" value="Manila Region">
 
-                    <!-- Form Fields -->
                     <label for="first_name" class="required">First Name</label>
                     <input id="first_name" maxlength="40" name="first_name" type="text" required aria-required="true">
                     <div id="first_name_error" class="error-message">Please enter your first name.</div>
@@ -258,20 +254,17 @@
                     <label for="phone">Phone</label>
                     <input id="phone" maxlength="40" name="phone" type="text">
 
-                    <!-- Message Field -->
                     <label for="00NHu0000165pix">Message</label>
                     <textarea id="00NHu0000165pix" name="00NHu0000165pix" rows="3" wrap="soft"></textarea>
 
-                    <!-- Submit Button -->
                     <input type="submit" value="Send Message" id="submit_button" disabled>
                 </form>
 
-                <!-- Success message -->
                 <div id="success_message" class="success-message">Thanks, your information is submitted successfully.</div>
             </div>
         </div>
     </div>
-    <!-- New popup modal -->
+
     <div id="successModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -319,37 +312,64 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if (validateEmail(emailInput.value)) {
-                // Show success message in the form
                 successMessage.style.display = 'block';
-                
-                // Show the modal popup
                 modal.style.display = "block";
-                
-                // Submit the form
                 form.submit();
-                
-                // Set a timeout to redirect after showing the success message
                 setTimeout(() => {
                     window.location.href = "https://sandeeptechmatrixconsulting.github.io/KPGWebToLeadForm/";
-                }, 60000); 
+                }, 60000);
             } else {
                 document.getElementById('email_error').style.display = 'block';
             }
         });
 
-        // Close the modal when clicking on <span> (x)
         span.onclick = function() {
             modal.style.display = "none";
         }
 
-        // Close the modal when clicking outside of it
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
 
-        // Initial check
+        // Lazy loading implementation
+        document.addEventListener("DOMContentLoaded", function() {
+            let lazyImages = [].slice.call(document.querySelectorAll("img.lazy-load"));
+            
+            if ("IntersectionObserver" in window) {
+                let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            let lazyImage = entry.target;
+                            lazyImage.src = lazyImage.dataset.src;
+                            lazyImage.classList.add("loaded");
+                            lazyImageObserver.unobserve(lazyImage);
+                        }
+                    });
+                });
+
+                lazyImages.forEach(function(lazyImage) {
+                    lazyImageObserver.observe(lazyImage);
+                });
+            } else {
+                // Fallback for older browsers
+                lazyImages.forEach(function(lazyImage) {
+                    lazyImage.src = lazyImage.dataset.src;
+                    lazyImage.classList.add("loaded");
+                });
+            }
+        });
+
+        // Image error handling
+        document.querySelectorAll('img').forEach(img => {
+            img.onerror = function() {
+                this.src = 'path/to/fallback-image.jpg';
+                this.alt = 'Image failed to load';
+            };
+        });
+
+        // Initial form validity check
         checkFormValidity();
     </script>
 </body>
